@@ -1,0 +1,21 @@
+{
+  "name": "music-links",
+  "version": "0.0.0",
+  "description": "A node server designed to serve an api that given a song will provide links across multiple platforms.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "npm",
+    "music",
+    "spotify",
+    "apple",
+    "music"
+  ],
+  "author": "Will Brindle",
+  "license": "ISC",
+  "dependencies": {
+    "node-fetch": "^1.5.3"
+  }
+}
