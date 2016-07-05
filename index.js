@@ -1,10 +1,11 @@
-var SpotifyAPI = require('./SpotifyAPI').API;
-var SpotifyEntities = require('./SpotifyAPI').ENTITIES;
+var SpotifyAPI = require('./SpotifyAPI');
 
 
 var spotify = new SpotifyAPI();
 
-spotify.search("hello world", SpotifyEntities.TRACK)
-    .then(json => console.log(json));
+spotify.search("The Smith Street Band", "Sigourney Weaver")
+    .then(resp => {
+        console.log(resp);
+    });
 
-setTimeout(function (){ console.log("Finished"); }, 5000);
+setTimeout(function (){ console.log("Finished"); }, 15000);

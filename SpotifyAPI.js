@@ -3,20 +3,12 @@
 var fetch = require('node-fetch');
 
 
-const ENTITIES = {
-    ALBUM: "album",
-    ARTIST: "artist",
-    TRACK: "track",
-    PLAYLIST: "playlist"
-};
-
 /**
  * takes in an optional token that can be used to enhance requests
  */
 function SpotifyAPI (credentials) {
 
-    function _makeRequest(uri)
-    {
+    function _makeRequest(uri) {
         const baseUrl = "https://api.spotify.com/v1/";
         let url = baseUrl + uri;
 
@@ -30,13 +22,38 @@ function SpotifyAPI (credentials) {
      * 
      * @returns {promise}   A promise containing the json returned from the request
      */ 
-    this.search = function(term, types) {
-        const typeStr = Array.isArray(types) ? types.join(",") : types;
+    this.search = function(artist, track) {
+        const term = track + "%20artist:" + artist;
 
-        const uri = "search?q=" + term + "&type=" + typeStr + "&limit=50";
+        const uri = "search?q=" + term + "&type=track&limit=5";
 
-        return _makeRequest(uri);
+        var prom = new Promise(function (resolve, reject) {
+                _makeRequest(uri).then(resp => {
+                    var found = false;
+
+                    resp.tracks.items.forEach(item => { 
+                            if (item.name.toLowerCase() === track.toLowerCase()) {
+                                var artistFound = false;
+
+                                item.artists.forEach(artistObj => {
+                                        if (artistObj.name.toLowerCase() === artist.toLowerCase())
+                                            artistFound = true;
+                                    });
+
+                                if (artistFound) {
+                                    resolve(item.external_urls.spotify);
+                                    found = true;
+                                }
+                            }
+                        });
+
+                    reject(false);
+                });
+
+            });
+        
+        return prom;
     }
 }
 
-module.exports = { API: SpotifyAPI, ENTITIES };
+module.exports = SpotifyAPI;
